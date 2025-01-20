@@ -34,7 +34,7 @@ ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='', cast=lambda v: v.spli
 ALLOWED_HOSTS = ['cocinaconnosotros.pythonanywhere.com']
 
 # ALLOWED_HOSTS = ['192.168.1.100'] # Para usar en producción (IP pública)
-DEBUG = True # Deshabilitar en el modo de producción
+DEBUG = False # Deshabilitar en el modo de producción
 
 # Application definition
 INSTALLED_APPS = [
@@ -160,16 +160,6 @@ LOGIN_REDIRECT_URL = '/change-password/'  # Cambiar la contraseña si ha expirad
 # POLÍTICAS DE SEGURIDAD:
 
 # Politicas de contraseñas generales
-PASSWORD_HISTORY_COUNT = 24 # Número de contraseñas que se almacenan en el historial
-PASSWORD_MIN_LENGTH = 8  # Mínimo número de caracteres en una contraseña
-PASSWORD_COMPLEXITY = {  # Politicas de complejidad de la contraseña
-    'UPPER': 1,  #
-    'LOWER': 1,  #
-    'DIGITS': 1,  #
-    'SPECIAL': 1,  #
-}
-PASSWORD_EXPIRY_DAYS = 90  # Tiempo (en días) que una contraseña es válida antes de requerir cambio (opcional)
-PASSWORD_CHANGE_ON_FIRST_LOGIN = True  # Cambiar la contraseña al primer inicio de sesión
 
 # Configuración del password_policies
 PASSWORD_MIN_LENGTH = 8  # Mínimo número de caracteres en una contraseña
@@ -184,11 +174,24 @@ PASSWORD_MIN_REPEAT_CHAR = 4  # Número mínimo de caracteres repetidos en una c
 PASSWORD_MIN_REPEAT_WORD = 1  # Número mínimo de palabras repetidas en una contraseña
 
 # Configuración de la password_history
-PASSWORD_HISTORY_COUNT = 15 # Número de contraseñas que se almacenan en el historial
+PASSWORD_HISTORY_COUNT = 24 # Número de contraseñas que se almacenan en el historial
+PASSWORD_MIN_LENGTH = 12  # Mínimo número de caracteres en una contraseña
+PASSWORD_COMPLEXITY = {  # Politicas de complejidad de la contraseña
+    'UPPER': 1,  #
+    'LOWER': 1,  #
+    'DIGITS': 1,  #
+    'SPECIAL': 1,  #
+}
+PASSWORD_HISTORY_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  # Algoritmo de hashing para el historial
+]
+PASSWORD_EXPIRY_DAYS = 90  # Tiempo (en días) que una contraseña es válida antes de requerir cambio (opcional)
+PASSWORD_CHANGE_ON_FIRST_LOGIN = True  # Cambiar la contraseña al primer inicio de sesión
 PREVIOUS_PASSWORD_COUNT = 3  # Número de contraseñas anteriores a la actual que se almacenan en el historial
 AUTH_PASSWORD_HISTORY = 24  # Número de contraseñas a recordar
 PASSWORD_MINIMUM_AGE = 5 # Tiempo (en días) que debe pasar antes de cambiar la contraseña nuevamente (opcional)
 PASSWORD_MAXIMUM_AGE = 183  # 90 días # Tiempo (en días) que una contraseña es válida antes de requerir cambio (opcional)
+PASSWORD_HISTORY_ERROR_MESSAGE = 'No puedes reutilizar una contraseña previa. Por favor, elige una nueva contraseña.'
 
 # Configuración de django-axes
 AXES_FAILURE_LIMIT = 5  # Número máximo de intentos fallidos antes de bloquear
