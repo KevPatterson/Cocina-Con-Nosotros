@@ -259,6 +259,9 @@ APPEND_SLASH = True # Agregar barra al final de la URL
 SESSION_COOKIE_HTTPONLY = True  # Solo accesible desde el servidor (Evita acceso desde JavaScript)
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Sesiones en la base de datos
 
+# Desactivar el uso de `sessionid` en las URLs
+SESSION_COOKIE_NAME = 'sessionid'  # Nombre de la cookie de sesión
+
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend',  # Backend de Axes
     'django.contrib.auth.backends.ModelBackend',  # Backend predeterminado de Django

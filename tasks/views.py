@@ -73,8 +73,9 @@ def home(request):
 @csrf_protect
 @login_required
 def signout(request):
-    logout(request)
-    return redirect('home')
+    request.session.flush()  # Elimina la sesión y cambia el identificador
+    logout(request)  # Cierra la sesión del usuario
+    return redirect('home')  # Redirige a la página principal
 
 @csrf_protect
 def signin(request):
@@ -646,14 +647,23 @@ def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Mantener la sesión activa
+            user = form.save()  # Cambia la contraseña del usuario
+
+            # Cambiar el identificador de sesión tras el cambio de contraseña
+            request.session.cycle_key()
+
+            # Mantener la sesión activa para que no se cierre
+            update_session_auth_hash(request, user)
+
             messages.success(request, 'Tu contraseña ha sido actualizada exitosamente.')
+
+            # Redirige al destino que quieras (por ejemplo, "user_dashboard" o "user_profile")
             return redirect('user_profile')
         else:
             messages.error(request, 'Hubo un error al actualizar tu contraseña.')
     else:
         form = PasswordChangeForm(user=request.user)
+
     return render(request, 'change_password.html', {'form': form})
 
 @csrf_protect
